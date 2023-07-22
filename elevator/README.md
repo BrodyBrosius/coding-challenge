@@ -24,5 +24,3 @@ Create an application that simulates the operation of a simple elevator.
 - Enhance the application as follows: If the elevator has reached its weight limit, it should stop only at floors that were selected from inside the elevator (to let passengers out), until it is no longer at the max weight limit.
 
 **Note:** For simplicity, the asynchronous request buttons can be entered by the application user via the console, by entering **"5U"** (request from 5th floor wanting to go Up) or **"8D"** (request from 8th floor wanting to go Down) or **"2"** (request from inside elevator wanting to stop at 2nd floor). When the user enters **"Q"** on the console, the application must end after visiting all floors entered before **"Q"**.
-
-Test change for commit
