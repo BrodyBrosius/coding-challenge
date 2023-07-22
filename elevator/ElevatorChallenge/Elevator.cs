@@ -1,13 +1,14 @@
-class Elevator
+
+namespace elevatorNS
 {
-
-    bool isGoingUp;
-    bool isGoingDown;
-    bool isMoving;
-    int currentFloor;
-    double currentWeight;
-    double weightLimit;
-
-
-
+    class Elevator
+    {
+        bool isGoingUp;
+        bool isGoingDown;
+        bool isMoving;
+        int currentFloor;
+        double currentWeight;
+        double weightLimit;
+    }
 }
+
