@@ -12,8 +12,10 @@ namespace ElevatorChallenge
 
     class Program
     {
+        public static Queue<FloorRequest> floorRequestQueue;
         static void Main(string[] args)
         {
+            Program.floorRequestQueue = new Queue<FloorRequest>();
 
             Elevator elevator = new Elevator(100.0, 200.0);
             Building building = new Building(10, elevator);
@@ -37,6 +39,10 @@ namespace ElevatorChallenge
                 }
                 else
                 {
+                    foreach (var element in Program.floorRequestQueue)
+                    {
+                        Console.WriteLine($"{element.requestedFloor.floorNumber} / {element.timeStamp}");
+                    }
                     go = false;
                 }
 
@@ -67,6 +73,7 @@ namespace ElevatorChallenge
                 Console.WriteLine($"Request for {floorRequest} recieved...");
                 FloorRequest newRequest = new FloorRequest(floorRequest);
                 Console.WriteLine($"TimeStamp for {floorRequest}: {newRequest.timeStamp}");
+                floorRequestQueue.Enqueue(newRequest);
                 Task.Delay(5000).Wait();
             });
 
