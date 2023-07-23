@@ -19,27 +19,56 @@ namespace ElevatorChallenge
             Building building = new Building(10, elevator);
 
 
-            char userInput = '0';
-            string val = "";
+            string userInput = "";
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Welcome to the Advanced Elevator Experience!");
             Console.WriteLine("The elevator is presently at floor zero. Please input which floor you would like to go to.");
             Console.WriteLine("If you would like to stop the program, press any letter on your keyboard.");
 
+            Console.ForegroundColor = ConsoleColor.White;
+            bool go = true;
+            while (go)
+            {
+                string val = Console.ReadLine();
+                Console.WriteLine($"Input: {val}. Calling listener...");
+                if (floorRequestValidator(val) == true)
+                {
+                    floorRequestListener(val);
+                }
+                else
+                {
+                    go = false;
+                }
 
-            FloorRequest test1 = new FloorRequest("1");
-            FloorRequest test2 = new FloorRequest("2U");
+            }
 
 
 
+        }
 
-            // while (!Char.IsLetter(userInput))
-            // {
-            //     val = Console.ReadLine();
-            //     userInput = char.Parse(val);
-            //     Console.WriteLine(userInput);
-            // }
-
-
+        public static bool floorRequestValidator(string floorRequest)
+        {
+            if (floorRequest.Length > 2)
+            {
+                Console.WriteLine($"Request for {floorRequest} denied. Input too long.");
+                return false;
+            }
+            else if (floorRequest.Length < 1)
+            {
+                Console.WriteLine($"Request for {floorRequest} denied. Input too short.");
+                return false;
+            }
+            return true;
+        }
+        public static async Task floorRequestListener(string floorRequest)
+        {
+            await Task.Run(() =>
+            {
+                Console.WriteLine($"Request for {floorRequest} recieved...");
+                FloorRequest newRequest = new FloorRequest(floorRequest);
+                Console.WriteLine($"TimeStamp for {floorRequest}: {newRequest.timeStamp}");
+                Task.Delay(5000).Wait();
+            });
 
         }
     }

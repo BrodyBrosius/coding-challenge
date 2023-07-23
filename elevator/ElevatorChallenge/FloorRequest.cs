@@ -6,9 +6,9 @@ namespace floorrequestNS
 {
     class FloorRequest
     {
-        TimeSpan timeStamp { get; set; }
-        string direction { get; set; }
-        Floor requestedFloor { get; set; }
+        public TimeSpan timeStamp { get; set; }
+        public string direction { get; set; }
+        public Floor requestedFloor { get; set; }
 
         public FloorRequest(string floorRequest)
         {
