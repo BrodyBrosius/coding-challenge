@@ -31,7 +31,7 @@ namespace floorrequestNS
                 this.direction = "N/A";
             }
 
-            this.requestedFloor = new Floor(Int32.Parse(floorRequest.Substring(0)));
+            this.requestedFloor = new Floor(Int32.Parse(floorRequest.Substring(0, 1)));
         }
 
     }

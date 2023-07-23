@@ -27,6 +27,7 @@ namespace ElevatorChallenge
 
 
             FloorRequest test1 = new FloorRequest("1");
+            FloorRequest test2 = new FloorRequest("2U");
 
 
 
