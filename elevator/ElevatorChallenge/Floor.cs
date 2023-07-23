@@ -4,7 +4,7 @@ namespace floorNS
 {
     class Floor
     {
-        int floorNumber;
+        public int floorNumber { get; set; }
 
         public Floor(int floorNumber)
         {
