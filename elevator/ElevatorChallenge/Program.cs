@@ -5,6 +5,7 @@ using System.Linq;
 using buildingNS;
 using elevatorNS;
 using floorNS;
+using floorrequestNS;
 
 namespace ElevatorChallenge
 {
@@ -25,14 +26,17 @@ namespace ElevatorChallenge
             Console.WriteLine("If you would like to stop the program, press any letter on your keyboard.");
 
 
+            FloorRequest test1 = new FloorRequest("1");
 
 
-            while (!Char.IsLetter(userInput))
-            {
-                val = Console.ReadLine();
-                userInput = char.Parse(val);
-                Console.WriteLine(userInput);
-            }
+
+
+            // while (!Char.IsLetter(userInput))
+            // {
+            //     val = Console.ReadLine();
+            //     userInput = char.Parse(val);
+            //     Console.WriteLine(userInput);
+            // }
 
 
 
