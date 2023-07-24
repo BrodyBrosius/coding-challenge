@@ -12,38 +12,38 @@ namespace ElevatorChallenge
 
     class Program
     {
-        public static Queue<FloorRequest> floorRequestQueue;
-        static void Main(string[] args)
+        public static Queue<FloorRequest> upFloorRequests;
+        public static Queue<FloorRequest> downFloorRequests;
+
+        static async Task Main(string[] args)
         {
-            Program.floorRequestQueue = new Queue<FloorRequest>();
+            Program.upFloorRequests = new Queue<FloorRequest>();
+            Program.downFloorRequests = new Queue<FloorRequest>();
 
             Elevator elevator = new Elevator(100.0, 200.0);
             Building building = new Building(10, elevator);
 
 
-            string userInput = "";
+            string val = "";
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Welcome to the Advanced Elevator Experience!");
             Console.WriteLine("The elevator is presently at floor zero. Please input which floor you would like to go to.");
-            Console.WriteLine("If you would like to stop the program, press any letter on your keyboard.");
+            Console.WriteLine("If you would like to stop the program, press 'q' on your keyboard.");
+
 
             Console.ForegroundColor = ConsoleColor.White;
-            bool go = true;
-            while (go)
+            while (val != "q")
             {
-                string val = Console.ReadLine();
+                val = Console.ReadLine();
                 Console.WriteLine($"Input: {val}. Calling listener...");
                 if (floorRequestValidator(val) == true)
                 {
-                    floorRequestListener(val);
+                    await floorRequestListener(val, elevator);
+                    await elevator.fetchNewFloorRequest();
                 }
                 else
                 {
-                    foreach (var element in Program.floorRequestQueue)
-                    {
-                        Console.WriteLine($"{element.requestedFloor.floorNumber} / {element.timeStamp}");
-                    }
-                    go = false;
+                    Console.WriteLine("Invalid entry");
                 }
 
             }
@@ -66,23 +66,30 @@ namespace ElevatorChallenge
             }
             return true;
         }
-        public static async Task floorRequestListener(string floorRequest)
+        public static async Task floorRequestListener(string floorRequest, Elevator elevator)
         {
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
                 Console.WriteLine($"Request for {floorRequest} recieved...");
-                FloorRequest newRequest = new FloorRequest(floorRequest);
-                Console.WriteLine($"TimeStamp for {floorRequest}: {newRequest.timeStamp}");
-                floorRequestQueue.Enqueue(newRequest);
-                Task.Delay(5000).Wait();
+                FloorRequest newRequest = new(floorRequest);
+                if (newRequest.requestedFloor.floorNumber < elevator.currentFloor.floorNumber)
+                {
+                    newRequest.direction = "Down";
+                    downFloorRequests.Enqueue(newRequest);
+
+                }
+                else if (newRequest.requestedFloor.floorNumber > elevator.currentFloor.floorNumber)
+                {
+                    newRequest.direction = "Up";
+                    upFloorRequests.Enqueue(newRequest);
+                }
+                else
+                {
+                    await elevator.moveElevatorToGivenFloor(newRequest);
+                }
             });
 
         }
     }
 
 }
-
-
-
-
-
