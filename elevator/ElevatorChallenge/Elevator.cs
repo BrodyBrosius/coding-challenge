@@ -30,13 +30,31 @@ namespace elevatorNS
                 Debug.WriteLine($"Elevator is currently at: {this.currentFloor.floorNumber}");
                 Debug.WriteLine("Elevator is moving...");
                 this.isMoving = true;
-                Floor previousFloor = currentFloor;
-                for (int i = previousFloor.floorNumber; i < fr.requestedFloor.floorNumber; i++)
+                if (fr.requestedFloor.floorNumber < this.currentFloor.floorNumber)
                 {
-                    Task.Delay(3000).Wait();
-                    this.currentFloor = this.floors[i];
-                    Debug.WriteLine($"Elevator passed floor {i} at {DateTime.Now.TimeOfDay}");
+                    Floor previousFloor = currentFloor;
+                    for (int i = previousFloor.floorNumber; i > fr.requestedFloor.floorNumber; i--)
+                    {
+                        Task.Delay(3000).Wait();
+                        this.currentFloor = this.floors[i];
+                        LogElevatorMovement(DateTime.Now.TimeOfDay, this.currentFloor);
+                        Debug.WriteLine($"Elevator passed floor {i} at {DateTime.Now.TimeOfDay}");
+
+                    }
                 }
+                else
+                {
+                    Floor previousFloor = currentFloor;
+                    for (int i = previousFloor.floorNumber; i < fr.requestedFloor.floorNumber; i++)
+                    {
+                        Task.Delay(3000).Wait();
+                        this.currentFloor = this.floors[i];
+                        LogElevatorMovement(DateTime.Now.TimeOfDay, this.currentFloor);
+                        Debug.WriteLine($"Elevator passed floor {i} at {DateTime.Now.TimeOfDay}");
+
+                    }
+                }
+
                 Task.Delay(3000).Wait();
                 int floorReqValue = fr.requestedFloor.floorNumber;
                 this.currentFloor = this.floors[floorReqValue];
@@ -51,11 +69,73 @@ namespace elevatorNS
                     this.isGoingUp = true;
                 }
                 this.isMoving = false;
+                LogElevatorMovement(DateTime.Now.TimeOfDay, this.currentFloor);
+
                 Debug.WriteLine($"Elevator arrived at {this.currentFloor.floorNumber}, time is {DateTime.Now.TimeOfDay}");
                 Debug.WriteLine($"Elevator is now at: {this.currentFloor.floorNumber}, waiting...");
                 Task.Delay(1000).Wait();
             });
 
+        }
+
+        public void LogElevatorMovement(TimeSpan timeStamp, Floor floor)
+        {
+            Debug.WriteLine(timeStamp.ToString());
+            Debug.WriteLine(floor.floorNumber);
+            string timeStampString = timeStamp.ToString();
+            string floorNumberString = floor.floorNumber.ToString();
+            if (this.isMoving)
+            {
+
+                string elevatorPassingString = $"Elevator passed floor {floorNumberString} at {timeStampString}";
+
+                int numberOfRetries = 100;
+                int delayOfRetries = 1000;
+                for (int i = 1; i < numberOfRetries; i++)
+                {
+                    try
+                    {
+                        using (StreamWriter writer = new StreamWriter("Elevator Log File.txt", true))
+                        {
+                            File.AppendAllText("Elevator Log File.txt", elevatorPassingString + Environment.NewLine);
+                            break;
+
+                        }
+                    }
+                    catch (IOException e) when (i <= numberOfRetries)
+                    {
+                        // You may check error code to filter some exceptions, not every error
+                        // can be recovered.
+                        Thread.Sleep(delayOfRetries);
+                    }
+                }
+
+
+            }
+            else
+            {
+                string elevatorArrivedString = $"Elevator arrived at floor {floorNumberString} at {timeStampString}";
+                int numberOfRetries = 100;
+                int delayOfRetries = 1000;
+                for (int i = 1; i < numberOfRetries; i++)
+                {
+                    try
+                    {
+                        using (StreamWriter writer = new StreamWriter("Elevator Log File.txt", true))
+                        {
+                            File.AppendAllText("Elevator Log File.txt", elevatorArrivedString + Environment.NewLine);
+                            break;
+
+                        }
+                    }
+                    catch (IOException e) when (i <= numberOfRetries)
+                    {
+                        // You may check error code to filter some exceptions, not every error
+                        // can be recovered.
+                        Thread.Sleep(delayOfRetries);
+                    }
+                }
+            }
         }
 
         public async Task fetchNewFloorRequest()
