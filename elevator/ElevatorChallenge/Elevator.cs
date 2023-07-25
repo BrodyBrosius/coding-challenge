@@ -95,9 +95,9 @@ namespace elevatorNS
                 {
                     try
                     {
-                        using (StreamWriter writer = new StreamWriter("Elevator Log File.txt", true))
+                        using (StreamWriter writer = new StreamWriter("Elevator Movement Log File.txt", true))
                         {
-                            File.AppendAllText("Elevator Log File.txt", elevatorPassingString + Environment.NewLine);
+                            File.AppendAllText("Elevator Movement Log File.txt", elevatorPassingString + Environment.NewLine);
                             break;
 
                         }
@@ -121,9 +121,9 @@ namespace elevatorNS
                 {
                     try
                     {
-                        using (StreamWriter writer = new StreamWriter("Elevator Log File.txt", true))
+                        using (StreamWriter writer = new StreamWriter("Elevator Movement Log File.txt", true))
                         {
-                            File.AppendAllText("Elevator Log File.txt", elevatorArrivedString + Environment.NewLine);
+                            File.AppendAllText("Elevator Movement Log File.txt", elevatorArrivedString + Environment.NewLine);
                             break;
 
                         }

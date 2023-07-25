@@ -25,6 +25,7 @@ namespace ElevatorChallenge
             Building building = new Building(10, elevator);
 
             GenerateElevatorLogFile();
+            GenerateElevatorRequestFile();
 
 
             string val = "";
@@ -42,6 +43,7 @@ namespace ElevatorChallenge
                 readLineTask = await GetInputAsync();
                 //Console.WriteLine($"Input: {readLineTask}. Calling listener...");
                 Debug.WriteLine($"Input value: {readLineTask}");
+                LogRequest(readLineTask);
                 if (floorRequestValidator(readLineTask) == true)
                 {
                     await floorRequestListener(readLineTask, elevator);
@@ -57,10 +59,57 @@ namespace ElevatorChallenge
 
 
         }
+        public static void LogRequest(string request)
+        {
+            Debug.WriteLine($"Request Contents: {request}");
+            TimeSpan timeStamp = DateTime.Now.TimeOfDay;
+            string reqTimeStamp = timeStamp.ToString();
+            string log = $"Request Content: {request}, request made at {reqTimeStamp}.";
+            int numberOfRetries = 100;
+            int delayOfRetries = 1000;
+            for (int i = 1; i < numberOfRetries; i++)
+            {
+                try
+                {
+                    using (StreamWriter writer = new StreamWriter("Elevator Request Log File.txt", true))
+                    {
+                        File.AppendAllText("Elevator Request Log File.txt", log + Environment.NewLine);
+                        break;
 
+                    }
+                }
+                catch (IOException e) when (i <= numberOfRetries)
+                {
+                    // You may check error code to filter some exceptions, not every error
+                    // can be recovered.
+                    Thread.Sleep(delayOfRetries);
+                }
+            }
+        }
+        public static void GenerateElevatorRequestFile()
+        {
+            string fileName = "Elevator Request Log File.txt";
+
+            try
+            {
+                // Check if file already exists. If yes, delete it.     
+                if (File.Exists(fileName))
+                {
+                    File.Delete(fileName);
+                }
+
+                // Create a new file     
+                FileStream fs = File.Create(fileName);
+                fs.Close();
+            }
+            catch (Exception Ex)
+            {
+                Console.WriteLine(Ex.ToString());
+            }
+        }
         public static void GenerateElevatorLogFile()
         {
-            string fileName = "Elevator Log File.txt";
+            string fileName = "Elevator Movement Log File.txt";
 
             try
             {
@@ -81,7 +130,6 @@ namespace ElevatorChallenge
         }
         public static async Task<string> GetInputAsync()
         {
-            Debug.WriteLine($"Recieved request at {DateTime.Now.TimeOfDay}");
             return await Task.Run(() => Console.ReadLine());
         }
 
