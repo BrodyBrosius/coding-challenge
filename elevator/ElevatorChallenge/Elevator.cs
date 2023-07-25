@@ -1,14 +1,16 @@
 using floorNS;
 using floorrequestNS;
 using ElevatorChallenge;
+using System.Diagnostics;
+
 
 namespace elevatorNS
 {
     class Elevator
     {
-        bool isGoingUp = true;
-        bool isGoingDown = false;
-        bool isMoving = false;
+        public bool isGoingUp = true;
+        public bool isGoingDown = false;
+        public bool isMoving = false;
         public Floor currentFloor { get; set; }
         int nextFloor = 0;
         double currentWeight;
@@ -25,12 +27,19 @@ namespace elevatorNS
         {
             await Task.Run(() =>
             {
-                Console.WriteLine($"Elevator is currently at: {this.currentFloor.floorNumber}");
+                Debug.WriteLine($"Elevator is currently at: {this.currentFloor.floorNumber}");
+                Debug.WriteLine("Elevator is moving...");
+                this.isMoving = true;
+                Floor previousFloor = currentFloor;
+                for (int i = previousFloor.floorNumber; i < fr.requestedFloor.floorNumber; i++)
+                {
+                    Task.Delay(3000).Wait();
+                    this.currentFloor = this.floors[i];
+                    Debug.WriteLine($"Elevator passed floor {i} at {DateTime.Now.TimeOfDay}");
+                }
+                Task.Delay(3000).Wait();
                 int floorReqValue = fr.requestedFloor.floorNumber;
                 this.currentFloor = this.floors[floorReqValue];
-                Console.WriteLine("Elevator is moving...");
-                this.isMoving = true;
-                Task.Delay(3000).Wait();
                 if (this.currentFloor.floorNumber == this.floors.Count - 1)
                 {
                     this.isGoingDown = true;
@@ -42,7 +51,9 @@ namespace elevatorNS
                     this.isGoingUp = true;
                 }
                 this.isMoving = false;
-                Console.WriteLine($"Elevator is now at: {this.currentFloor.floorNumber}");
+                Debug.WriteLine($"Elevator arrived at {this.currentFloor.floorNumber}, time is {DateTime.Now.TimeOfDay}");
+                Debug.WriteLine($"Elevator is now at: {this.currentFloor.floorNumber}, waiting...");
+                Task.Delay(1000).Wait();
             });
 
         }
