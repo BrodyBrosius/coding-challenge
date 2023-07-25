@@ -72,6 +72,7 @@ namespace ElevatorChallenge
 
                 // Create a new file     
                 FileStream fs = File.Create(fileName);
+                fs.Close();
             }
             catch (Exception Ex)
             {
