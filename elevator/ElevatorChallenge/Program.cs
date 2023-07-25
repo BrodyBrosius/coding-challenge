@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using System;
 using System.Linq;
+using System.Diagnostics;
 
 using buildingNS;
 using elevatorNS;
@@ -23,6 +24,8 @@ namespace ElevatorChallenge
             Elevator elevator = new Elevator(100.0, 200.0);
             Building building = new Building(10, elevator);
 
+            GenerateElevatorLogFile();
+
 
             string val = "";
             Console.ForegroundColor = ConsoleColor.Green;
@@ -32,13 +35,16 @@ namespace ElevatorChallenge
 
 
             Console.ForegroundColor = ConsoleColor.White;
-            while (val != "q")
+
+            while (true)
             {
-                val = Console.ReadLine();
-                Console.WriteLine($"Input: {val}. Calling listener...");
-                if (floorRequestValidator(val) == true)
+                string readLineTask;
+                readLineTask = await GetInputAsync();
+                //Console.WriteLine($"Input: {readLineTask}. Calling listener...");
+                Debug.WriteLine($"Input value: {readLineTask}");
+                if (floorRequestValidator(readLineTask) == true)
                 {
-                    await floorRequestListener(val, elevator);
+                    await floorRequestListener(readLineTask, elevator);
                     await elevator.fetchNewFloorRequest();
                 }
                 else
@@ -50,6 +56,32 @@ namespace ElevatorChallenge
 
 
 
+        }
+
+        public static void GenerateElevatorLogFile()
+        {
+            string fileName = "Elevator Log File.txt";
+
+            try
+            {
+                // Check if file already exists. If yes, delete it.     
+                if (File.Exists(fileName))
+                {
+                    File.Delete(fileName);
+                }
+
+                // Create a new file     
+                FileStream fs = File.Create(fileName);
+            }
+            catch (Exception Ex)
+            {
+                Console.WriteLine(Ex.ToString());
+            }
+        }
+        public static async Task<string> GetInputAsync()
+        {
+            Debug.WriteLine($"Recieved request at {DateTime.Now.TimeOfDay}");
+            return await Task.Run(() => Console.ReadLine());
         }
 
         public static bool floorRequestValidator(string floorRequest)
@@ -72,6 +104,17 @@ namespace ElevatorChallenge
             {
                 Console.WriteLine($"Request for {floorRequest} recieved...");
                 FloorRequest newRequest = new(floorRequest);
+                if (elevator.isMoving == true)
+                {
+                    if (elevator.isGoingUp)
+                    {
+                        downFloorRequests.Enqueue(newRequest);
+                    }
+                    if (elevator.isGoingDown)
+                    {
+                        upFloorRequests.Enqueue(newRequest);
+                    }
+                }
                 if (newRequest.requestedFloor.floorNumber < elevator.currentFloor.floorNumber)
                 {
                     newRequest.direction = "Down";
