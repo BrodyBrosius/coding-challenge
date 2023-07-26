@@ -12,7 +12,7 @@ sleep 5
 cd "ElevatorChallenge.Tests"
 dotnet test
 cd ..
-echo "${GREEN}================================================{NC}"
+echo "${GREEN}================================================${NC}"
 echo "${GREEN}Tests complete! Running application...${NC}"
 sleep 5
 dotnet run
