@@ -6,15 +6,14 @@ using System.Diagnostics;
 
 namespace elevatorNS
 {
-    class Elevator
+    public class Elevator
     {
         public bool isGoingUp = true;
         public bool isGoingDown = false;
         public bool isMoving = false;
         public Floor currentFloor { get; set; }
-        int nextFloor = 0;
-        double currentWeight;
-        double weightLimit;
+        public double currentWeight;
+        public double weightLimit;
         public List<Floor> floors { get; set; }
         public Elevator(double currentWeight, double weightLimit)
         {

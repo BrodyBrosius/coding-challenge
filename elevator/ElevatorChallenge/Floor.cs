@@ -2,7 +2,7 @@
 
 namespace floorNS
 {
-    class Floor
+    public class Floor
     {
         public int floorNumber { get; set; }
 

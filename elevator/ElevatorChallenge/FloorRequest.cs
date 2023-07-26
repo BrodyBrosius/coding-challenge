@@ -4,7 +4,7 @@ using floorNS;
 
 namespace floorrequestNS
 {
-    class FloorRequest
+    public class FloorRequest
     {
         public TimeSpan timeStamp { get; set; }
         public string direction { get; set; }
