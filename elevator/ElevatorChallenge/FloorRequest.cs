@@ -13,7 +13,8 @@ namespace floorrequestNS
         public FloorRequest(string floorRequest)
         {
             timeStamp = DateTime.Now.TimeOfDay;
-            Console.WriteLine($"{floorRequest}, {timeStamp}");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"Request Recieved for request to floor {floorRequest}, {timeStamp}");
 
             if (floorRequest.Length == 2)
             {

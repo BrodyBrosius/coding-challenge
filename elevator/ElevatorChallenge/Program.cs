@@ -32,9 +32,6 @@ namespace ElevatorChallenge
             Console.WriteLine("The elevator is presently at floor zero. Please input which floor you would like to go to.");
             Console.WriteLine("If you would like to stop the program, press 'q' on your keyboard.");
 
-
-            Console.ForegroundColor = ConsoleColor.White;
-
             bool userRequestedEndToProgram = false;
 
 
@@ -56,6 +53,7 @@ namespace ElevatorChallenge
                 }
                 else
                 {
+                    Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Invalid entry");
                 }
 
@@ -67,7 +65,6 @@ namespace ElevatorChallenge
         }
         public static void LogRequest(string request)
         {
-            Debug.WriteLine($"Request Contents: {request}");
             TimeSpan timeStamp = DateTime.Now.TimeOfDay;
             string reqTimeStamp = timeStamp.ToString();
             string log = $"Request Content: {request}, request made at {reqTimeStamp}.";
@@ -106,7 +103,10 @@ namespace ElevatorChallenge
 
                 // Create a new file     
                 FileStream fs = File.Create(fileName);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Elevator Request Log File.txt created!");
                 fs.Close();
+
             }
             catch (Exception Ex)
             {
@@ -127,7 +127,10 @@ namespace ElevatorChallenge
 
                 // Create a new file     
                 FileStream fs = File.Create(fileName);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Elevator Movement Log File.txt created!");
                 fs.Close();
+
             }
             catch (Exception Ex)
             {
@@ -141,6 +144,7 @@ namespace ElevatorChallenge
 
         public static bool floorRequestValidator(string floorRequest)
         {
+            Console.ForegroundColor = ConsoleColor.Green;
             if (floorRequest.Length > 2)
             {
                 Console.WriteLine($"Request for {floorRequest} denied. Input too long.");
@@ -155,18 +159,21 @@ namespace ElevatorChallenge
         }
         public static async Task floorRequestListener(string floorRequest, Elevator elevator)
         {
+            Console.ForegroundColor = ConsoleColor.Green;
             await Task.Run(async () =>
             {
                 Console.WriteLine($"Request for {floorRequest} recieved...");
                 FloorRequest newRequest = new(floorRequest);
 
-                if (newRequest.requestedFloor.floorNumber < elevator.currentFloor.floorNumber)
+
+
+                if (newRequest.requestedFloor.floorNumber < elevator.currentFloor.floorNumber || newRequest.direction == "Down")
                 {
                     newRequest.direction = "Down";
                     downFloorRequests.Enqueue(newRequest);
 
                 }
-                else if (newRequest.requestedFloor.floorNumber > elevator.currentFloor.floorNumber)
+                else if (newRequest.requestedFloor.floorNumber > elevator.currentFloor.floorNumber || newRequest.direction == "Up")
                 {
                     newRequest.direction = "Up";
                     upFloorRequests.Enqueue(newRequest);

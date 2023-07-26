@@ -26,8 +26,8 @@ namespace elevatorNS
         {
             await Task.Run(() =>
             {
-                Debug.WriteLine($"Elevator is currently at: {this.currentFloor.floorNumber}");
-                Debug.WriteLine("Elevator is moving...");
+                Console.WriteLine($"Elevator is currently at: {this.currentFloor.floorNumber}");
+                Console.WriteLine("Elevator is moving...");
                 this.isMoving = true;
                 if (fr.requestedFloor.floorNumber < this.currentFloor.floorNumber)
                 {
@@ -37,7 +37,7 @@ namespace elevatorNS
                         Task.Delay(3000).Wait();
                         this.currentFloor = this.floors[i];
                         LogElevatorMovement(DateTime.Now.TimeOfDay, this.currentFloor);
-                        Debug.WriteLine($"Elevator passed floor {i} at {DateTime.Now.TimeOfDay}");
+                        Console.WriteLine($"Elevator passed floor {i} at {DateTime.Now.TimeOfDay}");
 
                     }
                 }
@@ -49,7 +49,7 @@ namespace elevatorNS
                         Task.Delay(3000).Wait();
                         this.currentFloor = this.floors[i];
                         LogElevatorMovement(DateTime.Now.TimeOfDay, this.currentFloor);
-                        Debug.WriteLine($"Elevator passed floor {i} at {DateTime.Now.TimeOfDay}");
+                        Console.WriteLine($"Elevator passed floor {i} at {DateTime.Now.TimeOfDay}");
 
                     }
                 }
@@ -70,8 +70,7 @@ namespace elevatorNS
                 this.isMoving = false;
                 LogElevatorMovement(DateTime.Now.TimeOfDay, this.currentFloor);
 
-                Debug.WriteLine($"Elevator arrived at {this.currentFloor.floorNumber}, time is {DateTime.Now.TimeOfDay}");
-                Debug.WriteLine($"Elevator is now at: {this.currentFloor.floorNumber}, waiting...");
+                Console.WriteLine($"Elevator is now at: {this.currentFloor.floorNumber}, waiting...");
                 Task.Delay(1000).Wait();
             });
 
@@ -79,8 +78,6 @@ namespace elevatorNS
 
         public void LogElevatorMovement(TimeSpan timeStamp, Floor floor)
         {
-            Debug.WriteLine(timeStamp.ToString());
-            Debug.WriteLine(floor.floorNumber);
             string timeStampString = timeStamp.ToString();
             string floorNumberString = floor.floorNumber.ToString();
             if (this.isMoving)
