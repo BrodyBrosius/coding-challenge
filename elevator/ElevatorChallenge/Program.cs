@@ -27,8 +27,6 @@ namespace ElevatorChallenge
             GenerateElevatorLogFile();
             GenerateElevatorRequestFile();
 
-
-            string val = "";
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Welcome to the Advanced Elevator Experience!");
             Console.WriteLine("The elevator is presently at floor zero. Please input which floor you would like to go to.");
@@ -37,11 +35,18 @@ namespace ElevatorChallenge
 
             Console.ForegroundColor = ConsoleColor.White;
 
-            while (true)
+            bool userRequestedEndToProgram = false;
+
+
+            while (userRequestedEndToProgram == false)
             {
                 string readLineTask;
                 readLineTask = await GetInputAsync();
-                //Console.WriteLine($"Input: {readLineTask}. Calling listener...");
+                if (readLineTask == "Q" || readLineTask == "q")
+                {
+                    userRequestedEndToProgram = true;
+                    break;
+                }
                 Debug.WriteLine($"Input value: {readLineTask}");
                 LogRequest(readLineTask);
                 if (floorRequestValidator(readLineTask) == true)
@@ -56,6 +61,7 @@ namespace ElevatorChallenge
 
             }
 
+            Console.WriteLine("PROGRAM END");
 
 
         }
