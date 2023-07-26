@@ -1,9 +1,8 @@
 using floorNS;
 using elevatorNS;
-
 namespace buildingNS
 {
-    class Building
+    public class Building
     {
         int numberOfFloors;
         public List<Floor> floors = new List<Floor>();
@@ -20,20 +19,8 @@ namespace buildingNS
                 Floor currentFloor = new Floor(i);
                 this.floors.Add(currentFloor);
             }
-
             elevator.floors = floors;
             elevator.currentFloor = floors[0];
-
-        }
-
-        public int getBuildingStories()
-        {
-            return this.floors.Count;
         }
     }
 }
-
-
-
-
-

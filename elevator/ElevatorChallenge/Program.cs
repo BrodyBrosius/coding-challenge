@@ -11,7 +11,7 @@ using floorrequestNS;
 namespace ElevatorChallenge
 {
 
-    class Program
+    public class Program
     {
         public static Queue<FloorRequest> upFloorRequests;
         public static Queue<FloorRequest> downFloorRequests;
@@ -159,17 +159,7 @@ namespace ElevatorChallenge
             {
                 Console.WriteLine($"Request for {floorRequest} recieved...");
                 FloorRequest newRequest = new(floorRequest);
-                if (elevator.isMoving == true)
-                {
-                    if (elevator.isGoingUp)
-                    {
-                        downFloorRequests.Enqueue(newRequest);
-                    }
-                    if (elevator.isGoingDown)
-                    {
-                        upFloorRequests.Enqueue(newRequest);
-                    }
-                }
+
                 if (newRequest.requestedFloor.floorNumber < elevator.currentFloor.floorNumber)
                 {
                     newRequest.direction = "Down";
