@@ -75,9 +75,6 @@ public class ElevatorTest
         Elevator elevator = new Elevator(currentWeight, maxWeight);
         Building building = new Building(numberOfBuildingFloors, elevator);
 
-        Debug.WriteLine(elevator.currentFloor.floorNumber);
-
-
         string incomingFloor = "9";
         FloorRequest floorReq = new FloorRequest(incomingFloor);
 
@@ -98,8 +95,6 @@ public class ElevatorTest
 
         Elevator elevator = new Elevator(currentWeight, maxWeight);
         Building building = new Building(numberOfBuildingFloors, elevator);
-
-        Debug.WriteLine(elevator.currentFloor.floorNumber);
 
         elevator.currentFloor = elevator.floors[9];
 

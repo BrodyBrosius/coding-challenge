@@ -24,8 +24,8 @@ namespace ElevatorChallenge
             Elevator elevator = new Elevator(100.0, 200.0);
             Building building = new Building(10, elevator);
 
-            GenerateElevatorLogFile();
-            GenerateElevatorRequestFile();
+            //GenerateElevatorLogFile();
+            //GenerateElevatorRequestFile();
 
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Welcome to the Advanced Elevator Experience!");
@@ -74,12 +74,11 @@ namespace ElevatorChallenge
             {
                 try
                 {
-                    using (StreamWriter writer = new StreamWriter("Elevator Request Log File.txt", true))
-                    {
-                        File.AppendAllText("Elevator Request Log File.txt", log + Environment.NewLine);
-                        break;
-
-                    }
+                    using StreamWriter writer = new("Elevator Request Log File.txt", true);
+                    writer.Close();
+                    File.AppendAllText("Elevator Request Log File.txt", log + Environment.NewLine);
+                    
+                    break;
                 }
                 catch (IOException e) when (i <= numberOfRetries)
                 {
@@ -87,54 +86,6 @@ namespace ElevatorChallenge
                     // can be recovered.
                     Thread.Sleep(delayOfRetries);
                 }
-            }
-        }
-        public static void GenerateElevatorRequestFile()
-        {
-            string fileName = "Elevator Request Log File.txt";
-
-            try
-            {
-                // Check if file already exists. If yes, delete it.     
-                if (File.Exists(fileName))
-                {
-                    File.Delete(fileName);
-                }
-
-                // Create a new file     
-                FileStream fs = File.Create(fileName);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Elevator Request Log File.txt created!");
-                fs.Close();
-
-            }
-            catch (Exception Ex)
-            {
-                Console.WriteLine(Ex.ToString());
-            }
-        }
-        public static void GenerateElevatorLogFile()
-        {
-            string fileName = "Elevator Movement Log File.txt";
-
-            try
-            {
-                // Check if file already exists. If yes, delete it.     
-                if (File.Exists(fileName))
-                {
-                    File.Delete(fileName);
-                }
-
-                // Create a new file     
-                FileStream fs = File.Create(fileName);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Elevator Movement Log File.txt created!");
-                fs.Close();
-
-            }
-            catch (Exception Ex)
-            {
-                Console.WriteLine(Ex.ToString());
             }
         }
         public static async Task<string> GetInputAsync()
